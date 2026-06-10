@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f2f5;
+    padding: 24px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .header h1 { font-size: 20px; font-weight: 700; color: #1a1a2e; letter-spacing: 1px; }
+  .header p { font-size: 11px; color: #888; margin-top: 4px; }
+  .tagline { text-align: center; font-size: 13px; font-weight: 700; color: #7209b7; margin-bottom: 14px; }
+
+  .bmc {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 8px;
+  }
+
+  .cell {
+    background: white;
+    border-radius: 8px;
+    padding: 13px;
+    border-top: 4px solid #ccc;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .cell h3 {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+  }
+
+  .key-partners   { grid-column: 1; grid-row: 1 / 3; border-top-color: #4361ee; min-height: 280px; }
+  .key-activities { grid-column: 2; grid-row: 1;     border-top-color: #3a86ff; }
+  .key-resources  { grid-column: 2; grid-row: 2;     border-top-color: #3a86ff; }
+  .value-prop     { grid-column: 3; grid-row: 1 / 3; border-top-color: #7209b7; }
+  .cust-rel       { grid-column: 4; grid-row: 1;     border-top-color: #f72585; }
+  .channels       { grid-column: 4; grid-row: 2;     border-top-color: #f72585; }
+  .cust-seg       { grid-column: 5; grid-row: 1 / 3; border-top-color: #e63946; }
+  .cost           { grid-column: 1 / 4; grid-row: 3; border-top-color: #118ab2; min-height: 120px; }
+  .revenue        { grid-column: 4 / 6; grid-row: 3; border-top-color: #06d6a0; min-height: 120px; }
+
+  .key-partners h3   { color: #4361ee; }
+  .key-activities h3 { color: #3a86ff; }
+  .key-resources h3  { color: #3a86ff; }
+  .value-prop h3     { color: #7209b7; }
+  .cust-rel h3       { color: #f72585; }
+  .channels h3       { color: #f72585; }
+  .cust-seg h3       { color: #e63946; }
+  .cost h3           { color: #118ab2; }
+  .revenue h3        { color: #06d6a0; }
+
+  /* Highlight */
+  .highlight {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 9px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: none;
+    letter-spacing: 0.4px;
+  }
+
+  .highlight-yellow { background: #f8ec7f; }
+  .highlight-blue   { background: #b1d2fe; }
+  .highlight-green  { background: #affbca; }
+  .highlight-orange { background: #fac37c; }
+  .highlight-purple { background: #dcbdfc; }
+  .highlight-red    { background: #feb4bd; }
+
+  /* Sticky note styles */
+  .yellow-note { background: #fdf9d9; }
+  .blue-note   { background: #e7f0fc; }
+  .green-note  { background: #e7feef; }
+  .orange-note { background: #fdf0e1; }
+  .purple-note { background: #f3ebfc; }
+  .red-note    { background: #fbe3e7; }
+
+  .yellow-note-title { color: #92700a; }
+  .blue-note-title   { color: #1e40af; }
+  .green-note-title  { color: #15803d; }
+  .orange-note-title { color: #c2410c; }
+  .purple-note-title { color: #7e22ce; }
+  .red-note-title    { color: #ce2233; }
+
+  /* Sticky note style tags */
+  .tag {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 9px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .tag-yellow { background: #f8ec7f; color: #92700a; }
+  .tag-blue   { background: #b1d2fe; color: #1e40af; }
+  .tag-green  { background: #affbca; color: #15803d; }
+  .tag-orange { background: #fac37c; color: #c2410c; }
+  .tag-purple { background: #dcbdfc; color: #7e22ce; }
+  .tag-red    { background: #feb4bd; color: #ce2233; }
+
+  ul { list-style: none; padding: 0; margin: 0; }
+  ul li {
+    font-size: 10px;
+    color: #333;
+    padding: 2px 0;
+    line-height: 1.45;
+    border-bottom: 1px solid #f3f3f3;
+  }
+  ul li:last-child { border-bottom: none; }
+  ul li::before { content: "›"; color: #bbb; margin-right: 4px; }
+
+  .group { margin-bottom: 10px; }
+
+  .note {
+    margin-top: 8px;
+    background: #f8f9fa;
+    border-left: 3px solid #dee2e6;
+    border-radius: 0 4px 4px 0;
+    padding: 5px 8px;
+    font-size: 9px;
+    color: #666;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .grid-card {
+    border-radius: 6px;
+    padding: 7px 9px;
+    font-size: 9.5px;
+    line-height: 1.45;
+  }
+
+  .grid-card strong {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 4px;
+  }
+
+  .rev-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .rev-card {
+    border-radius: 6px;
+    padding: 7px 9px;
+    font-size: 9.5px;
+    line-height: 1.45;
+  }
+  .rev-card strong {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 4px;
+  }
+  .rev-card ul { padding: 0; }
+  .rev-card ul li { font-size: 9.5px; padding: 1px 0; }
+
+  .cost-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .cost-card {
+    background: #fff3e0;
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #c2410c;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .watermark {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 10px;
+    color: #bbb;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🩺 SKALPEL — Business Model Canvas</h1>
+  <p>From whiteboard session · June 9, 2026</p>
+</div>
+<div class="tagline">"A community app for ORs"</div>
+
+<div class="bmc">
+
+  <!-- KEY PARTNERS -->
+  <div class="cell key-partners">
+    <h3>Key Partners</h3>
+    <div class="group">
+      <div class="grid">
+        <div class="grid-card orange-note">
+          <strong style="color:#92310a;">Strategic Alliances</strong>
+          <ul>
+            <li>Strategic alliances (TBD)</li>
+            <li>EHRs --> target companies with smaller market share for integration leverage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY ACTIVITIES -->
+  <div class="cell key-activities">
+    <h3>Key Activities</h3>
+    <div class="grid">
+      <div class="grid-card yellow-note">
+        <strong class="yellow-note-title">Platform / network development</strong>
+        
+        <ul>
+          <li>Professional OR-centered network</li>
+          <li>Skalpel Map OR-staff communication platform </li>
+          <li>Website app</li>
+          <li><div class="highlight highlight-yellow">(Future)</div> iOS / Android app</li>
+          <li>Platform management software</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUE PROPOSITION -->
+  <div class="cell value-prop">
+    <h3>Value Propositions</h3>
+
+    <div class="group">
+      <div class="grid">
+        <div class="grid-card yellow-note">
+          <strong class="yellow-note-title">Surgeons &amp; OR Staff</strong>
+          <ul>
+            <li>Online + in-person / conference</li>
+            <li>Surgical co-creation &amp; knowledge sharing</li>
+            <li>Community</li>
+            <li>Implant repository &amp; tool repository</li>
+            <li>Cross-pollination across institutions even within same broader organization</li>
+            <li>Reddit/NYTimes-like comments (you go for the comments) + Discussion anchored to actual procedures (not random text threads)</li>
+          </ul>
+        </div>
+        <div class="grid-card yellow-note">
+          <strong class="yellow-note-title">Surgeons &amp; OR Staff</strong>
+          <ul>
+            <li>Surgeons rate Reps?</li>
+            <li>Feed: you see a really interesting ankle fracture and you can post it and get feedback / comments w/ link to map</li>
+            <li>Posting Links: links to articles + videos with accompanying description </li>
+          </ul>
+        </div>
+        <div class="grid-card yellow-note">
+          <strong class="yellow-note-title">Surgeons &amp; OR Staff</strong>
+          <ul>
+            <li>Co-creation</li>
+            <li><div class="highlight highlight-yellow">(Future)</div> Substack-like way to have medical newsletters with compensation for authors</li>
+            <li>Posting Links: links to articles + videos with accompanying description </li>
+            <li>Notes: tab on maps, sharable, linkable to threads, groups, forums</li>
+          </ul>
+        </div>
+        <div class="grid-card blue-note">
+          <strong class="blue-note-title">OR Supply &amp; Device Reps</strong>
+          <ul>
+            <li><div class="highlight highlight-blue">EHR Dependent</div> Communication with Surgeons &amp; OR Staff about specific cases</li>
+          </ul>
+        </div>
+        <div class="grid-card blue-note">
+          <strong class="blue-note-title">OR Supply &amp; Device Companies</strong>
+          <ul>
+            <li>Device portfolio: technique guides, catalog</li>
+          </ul>
+        </div>
+        <div class="grid-card blue-note">
+          <strong class="blue-note-title">OR Supply &amp; Device Companies</strong>
+          <ul>
+            <li>Access / advertising to surgeons, APPs, and OR staff</li>
+            <li><div class="highlight highlight-blue">Cheaper, measurable connection than reps or conferences</div></li>
+          </ul>
+        </div>
+        <div class="grid-card green-note">
+          <strong class="green-note-title">OR / ASC Purchasing Admin</strong>
+          <ul>
+            <li>Device negotiations</li>
+            <li>Knowledge, OR supply, &amp; availability </li>
+          </ul>
+        </div>
+        <div class="grid-card green-note">
+          <strong class="green-note-title">OR / ASC Purchasing Admin</strong>
+          <ul>
+            <li>Procedure templates for institutions maintained and sent to new surgeons; editable by OR-staff</li>
+            <li><div class="highlight highlight-green">Systematize on-boarding</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMER RELATIONSHIPS -->
+  <div class="cell cust-rel">
+    <h3>Customer Relationships</h3>
+
+    <div class="group">
+      <div class="grid">
+        <div class="grid-card yellow-note">
+          <strong class="yellow-note-title">Surgeons &amp; OR Staff</strong>
+          <ul>
+            <li>Community + co-creation</li>
+          </ul>
+        </div>
+        <div class="grid-card blue-note">
+          <strong class="blue-note-title">ORs &amp; ASCs</strong>
+          <ul>
+            <li>Co-creation: through institution-specific templates</li>
+            <li>Communities: institutions share best practicies via templates, gleaning insights from info in app</li>
+          </ul>
+        </div>
+        <div class="grid-card green-note">
+          <strong class="green-note-title">OR Supply/Device Reps</strong>
+          <ul>
+            <li><div class="highlight highlight-green">Future?</div> Not sure what Reps could create. Provide open platform so Reps can create</li>
+            <li>Maybe posts/comments about devices?<div class="highlight highlight-green"> would need filtering so others can choose visibility</div></li>
+          </ul>
+        </div>
+        <div class="grid-card green-note">
+          <strong class="green-note-title">OR Supply/Device Companies</strong>
+          <ul>
+            <li>Self-service to maintain libraries + create ads</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY RESOURCES -->
+  <div class="cell key-resources">
+    <h3>Key Resources</h3>'
+    <div class="grid">
+      <div class="grid-card orange-note">
+        <strong class="orange-note-title">Intellectual</strong>
+        
+        <ul>
+          <li>BRAND</li>
+          <li><div class="highlight highlight-orange">app</div> Customer / device databases</li>
+          <li><div class="highlight highlight-orange">app</div> Map library (database)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANNELS -->
+  <div class="cell channels">
+    <h3>Channels</h3>
+
+    <div class="group">
+      <div class="grid">
+        <div class="grid-card yellow-note">
+          <strong class="yellow-note-title">Surgeons</strong>
+          
+          <ul>
+            <li>Conferences</li>
+            <li><div class="highlight highlight-yellow">Influencers</div> specifically surgeons with strong, large surgeon/medical connections</li>
+            <li>Journals</li>
+            <li><div class="highlight highlight-yellow">Influencers</div> how can we make these more enticing, with more information</li>
+          </ul>
+        </div>
+
+        <div class="grid-card blue-note">
+          <strong class="blue-note-title">OR Supply/Device Reps</strong>
+          
+          <ul>
+            <li>LinkedIn</li>
+            <li>Conferences</li>
+            <li>Email</li>
+          </ul>
+        </div>
+        <div class="grid-card blue-note">
+          <strong class="blue-note-title">OR Supply/Device Companies</strong>
+          
+          <ul>
+            <li>Instagram/Social Media--basically influencing: creating virality with influencers and ads makes us visible to OR/Supply companies</li>
+            <li>Conferences: in-person networking</li>
+            <li>Email</li>
+          </ul>
+        </div>
+        <div class="grid-card green-note">
+          <strong class="green-note-title">OR/ASC Purchasing Admins</strong>
+          
+          <ul>
+            <li>LinkedIn</li>
+            <li>Conferences</li>
+            <li>Email</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMER SEGMENTS -->
+  <div class="cell cust-seg">
+    <h3>Customer Segments</h3>
+
+    <div class="group">
+      <div class="grid">
+        <div class="grid-card yellow-note">
+          <div class="tag tag-yellow">Core OR Users</div>
+          <ul>
+            <li>Surgeons</li>
+            <li>APPs</li>
+            <li>Scrub Techs</li>
+            <li>Circulating Nurses</li>
+          </ul>
+        </div>
+        <div class="grid-card blue-note">
+          <div class="tag tag-blue">Industry</div>
+          <ul>
+            <li>OR Supply / Device Companies</li>
+            <li>OR Supply / Device Reps</li>
+          </ul>
+        </div>
+        <div class="grid-card green-note">
+          <div class="tag tag-green">Institutional</div>
+          <ul>
+            <li>ORs — Purchasing Admins</li>
+            <li>ASCs — Purchasing Admins</li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- COST STRUCTURE -->
+  <div class="cell cost">
+    <h3>Cost Structure</h3>
+    <div class="cost-grid">
+      <div class="cost-card">Advertising</div>
+      <div class="cost-card">Human Resources</div>
+      <div class="cost-card">Platform Management</div>
+      <div class="cost-card">Database Cost</div>
+    </div>
+  </div>
+
+  <!-- REVENUE STREAMS -->
+  <div class="cell revenue">
+    <h3>Revenue Streams</h3>
+    <div class="rev-grid">
+
+      <div class="rev-card" style="background:#fffde7;">
+        <strong style="color:#92700a;">Surgeons / APPs / Scrub / CRNA</strong>
+        <ul>
+          <li>Freemium (free account)</li>
+          <li>In-app payments</li>
+          <li>Data / engagement flywheel → paid tier</li>
+          <li>Invites / sharing maps → $$$</li>
+        </ul>
+      </div>
+
+      <div class="rev-card" style="background:#dbeafe;">
+        <strong style="color:#1e40af;">OR Supply / Device Companies</strong>
+        <ul>
+          <li>Advertising / sponsored content</li>
+          <li>Access fee accounts</li>
+          <li>Brand / vendor / device pages</li>
+          <li>Listed on map</li>
+          <li>Terms / supply for sales</li>
+        </ul>
+      </div>
+
+      <div class="rev-card" style="background:#e0f2fe;">
+        <strong style="color:#0369a1;">OR Supply / Device Reps</strong>
+        <ul>
+          <li>Access fee accounts</li>
+          <li>Build vendor / device page</li>
+          <li>Listed on map</li>
+          <li>Map contacts / terms</li>
+        </ul>
+      </div>
+
+      <div class="rev-card" style="background:#dcfce7;">
+        <strong style="color:#15803d;">ORs + ASCs</strong>
+        <ul>
+          <li>Subscription</li>
+          <li>New institutional templates</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="watermark">Skalpel Inc. · Whiteboard BMC Session, June 9, 2026 · Living document</div>
+
+</body>
+</html>
